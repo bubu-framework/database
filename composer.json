@@ -1,0 +1,20 @@
+{
+    "name": "bubu-framework/database",
+    "description": "Database communication",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "QuentinBubu",
+            "email": "QuentinBubu.dev@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.3"
+    },
+    "autoload": {
+        "psr-4" : {
+            "Bubu\\" : "src\\Database"
+        }
+    }
+}
