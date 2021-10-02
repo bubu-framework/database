@@ -1,6 +1,6 @@
 {
     "name": "bubu-framework/database",
-    "description": "Database communication",
+    "description": "Database communication (bubu framework)",
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/bubu-framework/database",
