@@ -1,6 +1,5 @@
 <?php
-
-namespace Bubu\Database;
+namespace Bubu\Database\Exception;
 
 class DatabaseException extends \Exception
 {

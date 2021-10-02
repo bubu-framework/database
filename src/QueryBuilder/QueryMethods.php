@@ -1,38 +1,20 @@
 <?php
-
-namespace Bubu\Database;
+namespace Bubu\Database\QueryBuilder;
 
 trait QueryMethods
 {
-
-    /**
-     * @var string $table
-     * @var string|null $as
-     * @var string|null $action
-     * @var string|null $condition
-     * @var string|null $set
-     * @var array $values
-     */
     protected $table;
     protected $as;
     protected $action;
     protected $condition;
     protected $set;
-    protected array $values = [];
+    protected $values = [];
+    protected $orderBy;
+    protected $limit;
 
     public function table(string $table): self
     {
         $this->table = $table;
-        return $this;
-    }
-
-    /**
-     * @param  string $as
-     * @return self
-     */
-    public function as(string $as): self
-    {
-        $this->as =  "AS {$as} ";
         return $this;
     }
 
@@ -135,14 +117,28 @@ trait QueryMethods
     }
 
     /**
-     * @return string
+     * order by
+     *
+     * @param string $column
+     * @param string $order
+     * @return self
      */
-    private function build(): string
+    public function orderBy(string $column, string $order = parent::ASC): self
     {
-       $request = str_replace('[TABLE_NAME]', $this->table, $this->action);
-       if (!is_null($this->condition)) {
-           $request .= $this->condition;
-       }
-       return $request;
+        $this->orderBy = " ORDER BY `$column` $order";
+        return $this;
+    }
+
+    /**
+     * limit
+     *
+     * @param integer $limit
+     * @param integer $offset
+     * @return self
+     */
+    public function limit(int $limit, int $offset = 0): self
+    {
+        $this->limit = " LIMIT $limit OFFSET $offset";
+        return $this;
     }
 }

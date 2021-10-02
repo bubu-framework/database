@@ -15,12 +15,22 @@ class DatabaseRequest
      * @param array $values
      * @param string|null $type
      * @param int $mode
+     * @param array $opt
      * @return array|bool
      */
-    public static function request(string $request, array $values, ?string $type = null, int $mode = PDO::FETCH_ASSOC): mixed
-    {
+    public static function request(
+        string $strRequest,
+        array $values = [],
+        ?string $type = null,
+        int $mode = PDO::FETCH_ASSOC,
+        array $opt = []
+    ): mixed {
         try {
-            $request = Database::setPDO()->prepare($request);
+            if (count(explode(';', $strRequest)) > 1) {
+                self::request(explode(';', $strRequest)[0]);
+                $strRequest = explode(';', $strRequest)[1];
+            }
+            $request = Database::createConnection($opt)->prepare($strRequest);
             $i = 1;
             foreach ($values as $key => $value) {
                 if (strpos($key, '?') !== false) {

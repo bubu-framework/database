@@ -3,6 +3,7 @@
     "description": "Database communication",
     "type": "library",
     "license": "MIT",
+    "homepage": "https://github.com/bubu-framework/database",
     "authors": [
         {
             "name": "QuentinBubu",
@@ -14,7 +15,12 @@
     },
     "autoload": {
         "psr-4" : {
-            "Bubu\\" : "src\\Database"
+            "Bubu\\Database\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bubu\\Database\\Tests\\" : "tests/"
         }
     }
 }
