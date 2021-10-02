@@ -21,8 +21,8 @@ Call Database CreateTable const for create table, setup him and call execute fun
 - _Example_:
 
     ```php
-        Database::createTable('test')->addColumn(
-    Database::createColumn('col1')
+    Database::createTable('test')->addColumn(
+        Database::createColumn('col1')
         ->type(CreateColumn::INT)
         ->size(10)
         ->defaultValue(30)
