@@ -154,6 +154,7 @@ class CreateColumn
      */
     public function comments(string $comments): self
     {
+        $comments = str_replace("'", "\'", $comments);
         $this->comments = $comments;
         return $this;
     }
