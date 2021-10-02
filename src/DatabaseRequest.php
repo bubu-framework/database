@@ -36,7 +36,7 @@ class DatabaseRequest
                 if (strpos($key, '?') !== false) {
                     $key = $i;
                 } else {
-                    $key = ':' . ltrim($key, ':');
+                    $key = str_replace("bubu-fw-secure-{$i}-end-secure", '', ':' . ltrim($key, ':'), );
                 }
                 switch (gettype($value)) {
                     case 'integer':

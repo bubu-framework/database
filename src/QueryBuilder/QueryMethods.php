@@ -87,11 +87,7 @@ trait QueryMethods
     /**
      * @param array $where
      * ->where(
-     *      [
-     *          '<col>',
-     *          ['<marker>' => <value>],
-     *          ('<operator>')
-     *      ]
+     *      Database::expr()::<op>('<column>', '<marker>', <value>)
      * )
      * @return self
      */
@@ -103,22 +99,22 @@ trait QueryMethods
             $condition = $this->condition . ' OR (';
         }
         foreach ($where as $value) {
-            $marker = key($value[1]);
+            $marker = $value['marker'];
+
             if ($marker !== '?') $marker = ':' . ltrim($marker, ':');
-            if (isset($value[1])) {
-                $i = 0;
-                while (array_key_exists("{$marker}{$i}", $this->values)) {
-                    $i++;
-                }
-                $this->values[
-                    "{$marker}{$i}"
-                    ] = $value[1][key($value[1])];
+
+            $i = 1;
+            while (array_key_exists("{$marker}{$i}", $this->values)) {
+                $i++;
             }
-            if ($marker !== '?') $marker = $marker . $i;
-            $condition .= "`{$value[0]}` " . (isset($value[2]) ? "{$value[2]} " : '= ') . "{$marker} AND ";
+
+            $this->values[
+                "{$marker}bubu-fw-secure-{$i}-end-secure"
+            ] = $value['value'];
+
+            $condition .= "{$value['expr']} AND ";
         }
-        $condition = rtrim($condition, ' AND ');
-        $condition .= ')';
+        $condition = rtrim($condition, ' AND ') . ')';
         $this->condition = $condition;
         return $this;
     }

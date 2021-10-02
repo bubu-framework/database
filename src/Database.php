@@ -4,6 +4,7 @@ namespace Bubu\Database;
 use \PDO;
 use Bubu\Database\Actions\CreateTable;
 use Bubu\Database\Actions\CreateColumn;
+use Bubu\Database\QueryBuilder\Expr;
 use Bubu\Database\QueryBuilder\QueryBuilder;
 
 class Database
@@ -62,5 +63,15 @@ class Database
     public static function queryBuilder(string $table): QueryBuilder
     {
         return new QueryBuilder($table);
+    }
+
+    /**
+     * expr
+     *
+     * @return Expr
+     */
+    public static function expr(): Expr
+    {
+        return new Expr();
     }
 }

@@ -18,7 +18,7 @@ Database::createTable('test')
             ->type(CreateColumn::INT)
             ->size(10)
             ->defaultValue(30)
-            ->comments("It\'s ok")
+            ->comments("It's ok")
             ->notNull()
     )->addColumn(
         Database::createColumn('col2')
@@ -53,17 +53,27 @@ Database::queryBuilder('test')
     ])
     ->execute();
 
-Database::queryBuilder('test')
+var_dump(Database::queryBuilder('test')
     ->select('col1', 'col2')
     ->orderBy('col1', QueryBuilder::DESC)
-    ->limit(2, 1)
-    ->fetchAll();
-
-Database::queryBuilder('test')
+    ->limit(2)
+    ->where(
+        Database::expr()->eq('col1', ':col', 50)
+    )
+    ->fetchAll());
+/*
+    Database::queryBuilder('test')
     ->delete()
     ->where([
         'col1',
         [':col' => 60],
         '>='
     ])
+    ->execute();*/
+
+Database::queryBuilder('test')
+    ->delete()
+    ->where(
+        Database::expr()::lte('col1', ':col', 50)
+    )
     ->execute();
