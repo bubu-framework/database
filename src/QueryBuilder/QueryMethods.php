@@ -86,6 +86,13 @@ trait QueryMethods
 
     /**
      * @param array $where
+     * ->where(
+     *      [
+     *          '<col>',
+     *          ['<marker>' => <value>],
+     *          ('<operator>')
+     *      ]
+     * )
      * @return self
      */
     public function where(array ...$where): self
@@ -123,7 +130,7 @@ trait QueryMethods
      * @param string $order
      * @return self
      */
-    public function orderBy(string $column, string $order = parent::ASC): self
+    public function orderBy(string $column, string $order = QueryBuilder::ASC): self
     {
         $this->orderBy = " ORDER BY `$column` $order";
         return $this;

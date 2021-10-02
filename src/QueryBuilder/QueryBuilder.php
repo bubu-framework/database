@@ -9,7 +9,7 @@ class QueryBuilder implements QueryMethodsInterface
     use QueryMethods;
 
     public const ASC = 'ASC';
-    public const DSC = 'DSC';
+    public const DESC = 'DESC';
 
     protected $params = [];
     protected static $required = ['table'];
@@ -53,12 +53,15 @@ class QueryBuilder implements QueryMethodsInterface
     }
 
     /**
-     * @param mixed $mode
-     * @return array
+     * execute request
+     *
+     * @param string $returnMode
+     * @param string $fetchType
+     * @return mixed
      */
-    public function execute(string $returnMode, string $fetchType): bool
+    private function exec(string $returnMode = '', string $fetchType = ''): mixed
     {
-        $mode = self::fetchMode($returnMode);
+        $mode = ($returnMode !== '' ? self::fetchMode($returnMode) : 0);
         return DatabaseRequest::request(
             $this,
             $this->values,
@@ -69,19 +72,28 @@ class QueryBuilder implements QueryMethodsInterface
 
     /**
      * @param mixed $mode
-     * @return array
+     * @return array|bool
      */
-    public function fetch(string $mode = 'ASSOC')
+    public function fetch(string $mode = 'ASSOC'): mixed
     {
-        $this->execute($mode, Database::FETCH_ALL);
+        return $this->exec($mode, Database::FETCH);
     }
 
     /**
      * @param mixed $mode
-     * @return array
+     * @return array|bool
      */
-    public function fetchAll(string $mode = 'ASSOC')
+    public function fetchAll(string $mode = 'ASSOC'): mixed
     {
-        $this->execute($mode, Database::FETCH);
+        return $this->exec($mode, Database::FETCH_ALL);
+    }
+
+    /**
+     * @param mixed $mode
+     * @return mixed
+     */
+    public function execute(): mixed
+    {
+        return $this->exec();
     }
 }
