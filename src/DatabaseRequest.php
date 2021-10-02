@@ -23,6 +23,7 @@ class DatabaseRequest
         array $values = [],
         ?string $type = null,
         int $mode = PDO::FETCH_ASSOC,
+        ?Database $dbInstance = null,
         array $opt = []
     ): mixed {
         try {
@@ -30,7 +31,11 @@ class DatabaseRequest
                 self::request(explode(';', $strRequest)[0]);
                 $strRequest = explode(';', $strRequest)[1];
             }
-            $request = Database::createConnection($opt)->prepare($strRequest);
+            if (is_null($dbInstance)) {
+                $request = (new Database)->createConnection($opt)->getPdo()->prepare($strRequest);
+            } else {
+                $request = $dbInstance->getPdo()->prepare($strRequest);
+            }
             $i = 1;
             foreach ($values as $key => $value) {
                 if (strpos($key, '?') !== false) {

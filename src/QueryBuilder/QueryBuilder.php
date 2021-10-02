@@ -57,43 +57,62 @@ class QueryBuilder implements QueryMethodsInterface
      *
      * @param string $returnMode
      * @param string $fetchType
+     * @param Database|null $dbInstance
+     * @param array $opt
      * @return mixed
      */
-    private function exec(string $returnMode = '', string $fetchType = ''): mixed
-    {
+    private function exec(
+        string $returnMode = '',
+        string $fetchType = '',
+        ?Database $dbInstance = null,
+        array $opt = []
+    ): mixed {
         $mode = ($returnMode !== '' ? self::fetchMode($returnMode) : 0);
         return DatabaseRequest::request(
             $this,
             $this->values,
             $fetchType,
-            $mode
+            $mode,
+            $dbInstance,
+            $opt
         );
     }
 
     /**
      * @param mixed $mode
+     * @param Database|null $dbInstance
+     * @param array $opt
      * @return array|bool
      */
-    public function fetch(string $mode = 'ASSOC'): mixed
-    {
-        return $this->exec($mode, Database::FETCH);
+    public function fetch(
+        string $mode = 'ASSOC',
+        ?Database $dbInstance = null,
+        array $opt = []
+    ): mixed {
+        return $this->exec($mode, Database::FETCH, $dbInstance, $opt);
     }
 
     /**
      * @param mixed $mode
+     * @param Database|null $dbInstance
+     * @param array $opt
      * @return array|bool
      */
-    public function fetchAll(string $mode = 'ASSOC'): mixed
-    {
-        return $this->exec($mode, Database::FETCH_ALL);
+    public function fetchAll(
+        string $mode = 'ASSOC',
+        ?Database $dbInstance = null,
+        array $opt = []
+    ): mixed {
+        return $this->exec($mode, Database::FETCH_ALL, $dbInstance, $opt);
     }
 
     /**
-     * @param mixed $mode
+     * @param Database|null $dbInstance
+     * @param array $opt
      * @return mixed
      */
-    public function execute(): mixed
+    public function execute(?Database $dbInstance = null, array $opt = []): mixed
     {
-        return $this->exec();
+        return $this->exec('', '', $dbInstance, $opt);
     }
 }

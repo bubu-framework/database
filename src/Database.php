@@ -15,7 +15,9 @@ class Database
     public const FETCH = 'fetch';
     public const FETCH_ALL  = 'fetchAll';
 
-    public static function createConnection(array $dbConnectionOpt = null): PDO
+    private PDO $pdo;
+
+    public function createConnection(array $dbConnectionOpt = null): Database
     {
         $type = $dbConnectionOpt['type'] ?? $_ENV['DB_TYPE'];
         $host = $dbConnectionOpt['host'] ?? $_ENV['DB_HOST'];
@@ -34,8 +36,13 @@ class Database
         $pdo->setAttribute(PDO::ATTR_ERRMODE, $errorMode);
         $pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $this->pdo = $pdo;
+        return $this;
+    }
 
-        return $pdo;
+    public function getPdo(): PDO
+    {
+        return $this->pdo;
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 namespace Bubu\Database\Actions;
 
+use Bubu\Database\Database;
 use Bubu\Database\DatabaseRequest;
 use Bubu\Database\Exception\DatabaseException;
 
@@ -155,11 +156,12 @@ class CreateTable
     }
 
     /**
-     * Execute request
+     * @param Database|null $dbInstance
+     * @param array $opt
      * @return void
      */
-    public function execute(): void
+    public function execute(?Database $dbInstance = null, array $opt = []): void
     {
-        DatabaseRequest::request($this);
+        DatabaseRequest::request($this, [], null, 0, $dbInstance, $opt);
     }
 }
