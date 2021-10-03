@@ -9,11 +9,23 @@ use Bubu\Database\QueryBuilder\QueryBuilder;
 
 class Database
 {
-    public const ERRMODE_SILENT = PDO::ERRMODE_SILENT;
-    public const ERRORMODE_WARNING = PDO::ERRMODE_WARNING;
+    public const ERRMODE_SILENT      = PDO::ERRMODE_SILENT;
+    public const ERRORMODE_WARNING   = PDO::ERRMODE_WARNING;
     public const ERRORMODE_EXCEPTION = PDO::ERRMODE_EXCEPTION;
-    public const FETCH = 'fetch';
-    public const FETCH_ALL  = 'fetchAll';
+
+    public const FETCH     = 'fetch';
+    public const FETCH_ALL = 'fetchAll';
+
+    public const FETCH_ASSOC      = PDO::FETCH_ASSOC;
+    public const FETCH_BOTH       = PDO::FETCH_BOTH;
+    public const FETCH_BOUND      = PDO::FETCH_BOUND;
+    public const FETCH_CLASS      = PDO::FETCH_CLASS;
+    public const FETCH_INTO       = PDO::FETCH_INTO;
+    public const FETCH_LAZY       = PDO::FETCH_LAZY;
+    public const FETCH_NAMED      = PDO::FETCH_NAMED;
+    public const FETCH_NUM        = PDO::FETCH_NUM;
+    public const FETCH_OBJ        = PDO::FETCH_OBJ;
+    public const FETCH_PROPS_LATE = PDO::FETCH_PROPS_LATE;
 
     private PDO $pdo;
 
@@ -27,7 +39,9 @@ class Database
         $username = $dbConnectionOpt['username'] ?? $_ENV['DB_USERNAME'];
         $password = $dbConnectionOpt['password'] ?? $_ENV['DB_PASSWORD'];
         $errorMode = $dbConnectionOpt['errorMode'] ?? $_ENV['DB_ERRORMODE'];
-    
+
+        $fetchMode = $dbConnectionOpt['fetchMode'] ?? constant("self::{$_ENV['DB_FETCH_MODE']}");
+
         $pdo = new PDO(
             $type . ':host=' . $host . ';dbname=' . $name . ';port=' . $port . ';charset=' . $charset,
             $username,
@@ -37,6 +51,8 @@ class Database
         $pdo->setAttribute(PDO::ATTR_ERRMODE, $errorMode);
         $pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, $fetchMode);
+
         $this->pdo = $pdo;
         return $this;
     }

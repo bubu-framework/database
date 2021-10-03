@@ -11,6 +11,10 @@ $dotenv = Dotenv\Dotenv::createImmutable('../');
 $dotenv->load();
 $dotenv->required(['DB_USERNAME', 'DB_PASSWORD', 'DB_NAME', 'DB_HOST', 'DB_PORT']);
 
+$i = Database::createConnection([
+    //'fetchMode' => Database::FETCH_OBJ
+]);
+
 Database::createTable('test')
     ->ifNotExists()
     ->addColumn(
@@ -37,7 +41,7 @@ Database::createTable('test')
         'columns' => ['col1', 'id'],
         'name' => 'uniqueKey'
     ])
-    ->execute();
+    ->execute($i);
 
 Database::queryBuilder('test')
     ->insert([
@@ -51,7 +55,7 @@ Database::queryBuilder('test')
         'col1' => 50,
         'col2' => 'Super2!'
     ])
-    ->execute();
+    ->execute($i);
 
 var_dump(Database::queryBuilder('test')
     ->select('col1', 'col2')
@@ -60,7 +64,7 @@ var_dump(Database::queryBuilder('test')
     ->where(
         Database::expr()->eq('col1', ':col', 50)
     )
-    ->fetchAll());
+    ->fetchAll($i));
 /*
     Database::queryBuilder('test')
     ->delete()
@@ -76,4 +80,4 @@ Database::queryBuilder('test')
     ->where(
         Database::expr()::lte('col1', ':col', 50)
     )
-    ->execute();
+    ->execute($i);

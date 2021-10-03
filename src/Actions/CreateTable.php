@@ -162,6 +162,6 @@ class CreateTable
      */
     public function execute(?Database $dbInstance = null, array $opt = []): void
     {
-        DatabaseRequest::request($this, [], null, 0, $dbInstance, $opt);
+        DatabaseRequest::request($this, [], null, $dbInstance, $opt);
     }
 }

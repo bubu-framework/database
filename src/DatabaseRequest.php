@@ -11,7 +11,6 @@ class DatabaseRequest
      * @param string $request
      * @param array $values
      * @param string|null $type
-     * @param int $mode
      * @param array $opt
      * @return array|bool
      */
@@ -19,7 +18,6 @@ class DatabaseRequest
         string $strRequest,
         array $values = [],
         ?string $type = null,
-        int $mode = PDO::FETCH_ASSOC,
         ?Database $dbInstance = null,
         array $opt = []
     ): mixed {
@@ -64,11 +62,11 @@ class DatabaseRequest
             }
             $request->execute();
             if ($type === 'fetchAll') {
-                $return = $request->fetchAll($mode);
+                $return = $request->fetchAll();
                 $request->closeCursor();
                 return $return;
             } elseif ($type === 'fetch') {
-                $return = $request->fetch($mode);
+                $return = $request->fetch();
                 $request->closeCursor();
                 return $return;
             } else {
