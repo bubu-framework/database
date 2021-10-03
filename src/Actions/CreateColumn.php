@@ -43,14 +43,14 @@ class CreateColumn
 
     private string $name;
     private string $type;
-    private int    $size;
+    private ?int   $size          = null;
     private bool   $unsigned      = false;
     private bool   $zerofill      = false;
     private bool   $notNull       = false;
     private bool   $autoIncrement = false;
-    private string $defaultValue;
-    private string $comments;
-    private string $collate;
+    private ?string $defaultValue = null;
+    private ?string $comments     = null;
+    private ?string $collate      = null;
     private static array $required = ['name', 'type'];
 
     /**

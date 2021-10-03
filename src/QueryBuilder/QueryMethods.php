@@ -4,13 +4,13 @@ namespace Bubu\Database\QueryBuilder;
 trait QueryMethods
 {
     protected string $table;
-    protected string $as;
+    protected ?string $as        = null;
     protected string $action;
-    protected string $condition;
-    protected string $set;
-    protected array  $values = [];
-    protected string $orderBy;
-    protected string $limit;
+    protected ?string $condition = null;
+    protected ?string $set       = null;
+    protected array  $values     = [];
+    protected ?string $orderBy   = null;
+    protected ?string $limit     = null;
 
     public function table(string $table): self
     {

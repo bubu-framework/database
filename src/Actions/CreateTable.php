@@ -20,7 +20,7 @@ class CreateTable
     private array  $allIndex    = [];
     private array  $foreignKey  = [];
     private string $collate     = 'utf8_general_ci';
-    private string $comments;
+    private ?string $comments   = null;
     private string $engine      = 'InnoDB';
     private static array $required = ['name'];
     
