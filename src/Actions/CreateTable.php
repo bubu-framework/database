@@ -14,15 +14,15 @@ class CreateTable
     public const SPATIAL_INDEX  = 'SPATIAL';
     public const KEY_INDEX      = 'KEY';
 
-    private $ifNotExists = false;
-    private $name;
-    private $allColumn = [];
-    private $allIndex = [];
-    private $foreignKey = [];
-    private $collate = 'utf8_general_ci';
-    private $comments;
-    private $engine = 'InnoDB';
-    private static $required = ['name'];
+    private bool   $ifNotExists = false;
+    private string $name;
+    private array  $allColumn   = [];
+    private array  $allIndex    = [];
+    private array  $foreignKey  = [];
+    private string $collate     = 'utf8_general_ci';
+    private string $comments;
+    private string $engine      = 'InnoDB';
+    private static array $required = ['name'];
     
     /**
      * @param mixed $name

@@ -11,8 +11,8 @@ class QueryBuilder implements QueryMethodsInterface
     public const ASC = 'ASC';
     public const DESC = 'DESC';
 
-    protected $params = [];
-    protected static $required = ['table'];
+    protected array $params = [];
+    protected static array $required = ['table'];
 
     /**
      * @param string $table Table name

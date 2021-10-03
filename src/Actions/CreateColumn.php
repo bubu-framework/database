@@ -41,17 +41,17 @@ class CreateColumn
     public const TIMESTAMP   = 'timestamp';
 
 
-    private $name;
-    private $type;
-    private $size;
-    private $unsigned = false;
-    private $zerofill = false;
-    private $notNull = false;
-    private $autoIncrement = false;
-    private $defaultValue;
-    private $comments;
-    private $collate;
-    private static $required = ['name', 'type'];
+    private string $name;
+    private string $type;
+    private int    $size;
+    private bool   $unsigned      = false;
+    private bool   $zerofill      = false;
+    private bool   $notNull       = false;
+    private bool   $autoIncrement = false;
+    private string $defaultValue;
+    private string $comments;
+    private string $collate;
+    private static array $required = ['name', 'type'];
 
     /**
      * @param mixed $name
