@@ -23,12 +23,13 @@ class Database
         $host = $dbConnectionOpt['host'] ?? $_ENV['DB_HOST'];
         $name = $dbConnectionOpt['name'] ?? $_ENV['DB_NAME'];
         $port = $dbConnectionOpt['port'] ?? $_ENV['DB_PORT'];
+        $charset = $dbConnectionOpt['charset'] ?? $_ENV['DB_CHARSET'];
         $username = $dbConnectionOpt['username'] ?? $_ENV['DB_USERNAME'];
         $password = $dbConnectionOpt['password'] ?? $_ENV['DB_PASSWORD'];
         $errorMode = $dbConnectionOpt['errorMode'] ?? $_ENV['DB_ERRORMODE'];
     
         $pdo = new PDO(
-            $type . ':host=' . $host . ';dbname=' . $name . ';charset=utf8;port=' . $port,
+            $type . ':host=' . $host . ';dbname=' . $name . ';port=' . $port . ';charset=' . $charset,
             $username,
             $password
         );
