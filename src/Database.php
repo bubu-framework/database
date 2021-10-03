@@ -17,7 +17,7 @@ class Database
 
     private PDO $pdo;
 
-    public function createConnection(array $dbConnectionOpt = null): Database
+    private function __construct(?array $dbConnectionOpt =  null)
     {
         $type = $dbConnectionOpt['type'] ?? $_ENV['DB_TYPE'];
         $host = $dbConnectionOpt['host'] ?? $_ENV['DB_HOST'];
@@ -26,7 +26,7 @@ class Database
         $username = $dbConnectionOpt['username'] ?? $_ENV['DB_USERNAME'];
         $password = $dbConnectionOpt['password'] ?? $_ENV['DB_PASSWORD'];
         $errorMode = $dbConnectionOpt['errorMode'] ?? $_ENV['DB_ERRORMODE'];
-
+    
         $pdo = new PDO(
             $type . ':host=' . $host . ';dbname=' . $name . ';charset=utf8;port=' . $port,
             $username,
@@ -38,6 +38,11 @@ class Database
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         $this->pdo = $pdo;
         return $this;
+    }
+
+    public static function createConnection(?array $dbConnectionOpt = null): Database
+    {
+        return new Database($dbConnectionOpt);
     }
 
     public function getPdo(): PDO

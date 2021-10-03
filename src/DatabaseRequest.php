@@ -7,9 +7,6 @@ use Exception;
 
 class DatabaseRequest
 {
-    const FETCH = 'fetch';
-    const FETCH_ALL = 'fetchAll';
-
     /**
      * @param string $request
      * @param array $values
@@ -31,11 +28,10 @@ class DatabaseRequest
                 self::request(explode(';', $strRequest)[0]);
                 $strRequest = explode(';', $strRequest)[1];
             }
-            if (is_null($dbInstance)) {
-                $request = (new Database)->createConnection($opt)->getPdo()->prepare($strRequest);
-            } else {
-                $request = $dbInstance->getPdo()->prepare($strRequest);
-            }
+
+            if (is_null($dbInstance)) $request = Database::createConnection($opt)->getPdo()->prepare($strRequest);
+            else $request = $dbInstance->getPdo()->prepare($strRequest);
+
             $i = 1;
             foreach ($values as $key => $value) {
                 if (strpos($key, '?') !== false) {
