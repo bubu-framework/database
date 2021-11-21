@@ -48,7 +48,7 @@ class CreateColumn
     private bool   $zerofill      = false;
     private bool   $notNull       = false;
     private bool   $autoIncrement = false;
-    private ?string $defaultValue = null;
+    private mixed  $defaultValue = null;
     private ?string $comments     = null;
     private ?string $collate      = null;
     private static array $required = ['name', 'type'];
