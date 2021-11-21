@@ -203,7 +203,10 @@ class CreateColumn
                         ? " DEFAULT '{$this->defaultValue}'"
                         : ($this->autoIncrement
                             ? ' AUTO_INCREMENT'
-                            : ' DEFAULT NULL'
+                            : ($this->notNull
+                                ? ''
+                                : ' DEFAULT NULL'
+                            )
                         )
                     )
                     . (!is_null($this->comments) ? " COMMENT '{$this->comments}'" : '')
