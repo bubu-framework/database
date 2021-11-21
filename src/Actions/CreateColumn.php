@@ -200,7 +200,9 @@ class CreateColumn
                     . ($this->zerofill ? ' ZEROFILL' : '')
                     . ($this->notNull ? ' NOT NULL' : ' NULL')
                     . (!is_null($this->defaultValue) 
-                        ? " DEFAULT '{$this->defaultValue}'"
+                        ? (is_array($this->defaultValue)
+                            ? " DEFAULT {$this->defaultValue}"
+                            : " DEFAULT '{$this->defaultValue}'")
                         : ($this->autoIncrement
                             ? ' AUTO_INCREMENT'
                             : ($this->notNull
