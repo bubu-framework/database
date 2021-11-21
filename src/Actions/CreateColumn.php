@@ -201,7 +201,7 @@ class CreateColumn
                     . ($this->notNull ? ' NOT NULL' : ' NULL')
                     . (!is_null($this->defaultValue) 
                         ? (is_array($this->defaultValue)
-                            ? " DEFAULT {$this->defaultValue}"
+                            ? " DEFAULT {$this->defaultValue[0]}"
                             : " DEFAULT '{$this->defaultValue}'")
                         : ($this->autoIncrement
                             ? ' AUTO_INCREMENT'
