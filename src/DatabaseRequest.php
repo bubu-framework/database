@@ -35,7 +35,10 @@ class DatabaseRequest
                 if (strpos($key, '?') !== false) {
                     $key = $i;
                 } else {
-                    $key = str_replace("bubu-fw-secure-{$i}-end-secure", '', ':' . ltrim($key, ':'), );
+                    if (str_contains($key, "bubu-fw-secure-{$i}-end-secure")) {
+                        $key = str_replace("bubu-fw-secure-{$i}-end-secure", '', ':' . ltrim($key, ':'), );
+                        $i++;
+                    }
                 }
                 switch (gettype($value)) {
                     case 'integer':
@@ -58,7 +61,6 @@ class DatabaseRequest
                         $request->bindValue($key, $value);
                         break;
                 }
-                $i++;
             }
             $request->execute();
             if ($type === 'fetchAll') {
