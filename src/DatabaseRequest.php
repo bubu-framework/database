@@ -35,10 +35,8 @@ class DatabaseRequest
                 if (strpos($key, '?') !== false) {
                     $key = $i;
                 } else {
-                    if (str_contains($key, "bubu-fw-secure-{$i}-end-secure")) {
-                        $key = str_replace("bubu-fw-secure-{$i}-end-secure", '', ':' . ltrim($key, ':'), );
-                        $i++;
-                    }
+                    $key = ':' . ltrim($key, ':');
+                    $i++;
                 }
                 switch (gettype($value)) {
                     case 'integer':

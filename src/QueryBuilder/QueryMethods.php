@@ -74,9 +74,18 @@ trait QueryMethods
     {
         $request = '';
         foreach ($values as $key => $value) {
-            $request .= "`{$key}` = :{$key}, ";
+            $marker = $key;
+            $i = 1;
+            $marker = ltrim($marker, ':');
+            while (array_key_exists($marker . QueryBuilder::SECURE . $i, $this->values)) {
+                $i++;
+            }
+            if ($marker !== '?') $marker = $marker . QueryBuilder::SECURE . $i;
+
+            $request .= "`{$key}` = :{$marker}, ";
+
             $this->values[
-                $key
+                $marker
             ] = $value;
         }
         $request = trim($request, ', ');
@@ -101,18 +110,17 @@ trait QueryMethods
         foreach ($where as $value) {
             $marker = $value['marker'];
 
-            if ($marker !== '?') $marker = ':' . ltrim($marker, ':');
-
             $i = 1;
-            while (array_key_exists("{$marker}{$i}", $this->values)) {
+            $marker = ltrim($marker, ':');
+            while (array_key_exists($marker . QueryBuilder::SECURE . $i, $this->values)) {
                 $i++;
             }
-
+            if ($marker !== '?') $marker = $marker . QueryBuilder::SECURE . $i;
+            
             $this->values[
-                "{$marker}bubu-fw-secure-{$i}-end-secure"
-            ] = $value['value'];
-
-            $condition .= "{$value['expr']} AND ";
+                $marker
+                ] = $value['value'];
+            $condition .= $value['expr'] . QueryBuilder::SECURE . $i . " AND ";
         }
         $condition = rtrim($condition, ' AND ') . ')';
         $this->condition = $condition;

@@ -11,6 +11,8 @@ class QueryBuilder implements QueryMethodsInterface
     public const ASC = 'ASC';
     public const DESC = 'DESC';
 
+    public const SECURE = "_bubu_fw_end_secure_";
+
     protected array $params = [];
     protected static array $required = ['table'];
 
