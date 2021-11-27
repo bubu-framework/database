@@ -57,14 +57,14 @@ Database::queryBuilder('test')
     ])
     ->execute($i);
 
-var_dump(Database::queryBuilder('test')
+Database::queryBuilder('test')
     ->select('col1', 'col2')
     ->orderBy('col1', QueryBuilder::DESC)
     ->limit(2)
     ->where(
         Database::expr()->neq('col1', 50)
     )
-    ->fetchAll($i));
+    ->fetchAll($i);
 /*
     Database::queryBuilder('test')
     ->delete()
@@ -81,3 +81,11 @@ Database::queryBuilder('test')
         Database::expr()::lte('col1', 50)
     )
     ->execute($i);
+
+var_dump(Database::queryBuilder('test')
+    ->select('col2')
+    ->where(Database::expr()::in('id', ['27', 30]),
+    Database::expr()::in('id', [29, 42, 46]))
+    ->simulate()
+    ->fetchAll()
+);

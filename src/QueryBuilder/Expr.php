@@ -123,4 +123,19 @@ class Expr
             'expr'   => "`{$column}` IS NOT NULL :{$column}"
         ];
     }
+
+    /**
+     * in (IN)
+     *
+     * @param string $column
+     * @param array $value
+     * @return array
+     */
+    public static function in(string $column, array $value): array {
+        return [
+            'value'  => '(' . implode(',', $value) . ')',
+            'column' => $column,
+            'expr'   => "`{$column}` IN :{$column}"
+        ];
+    }
 }

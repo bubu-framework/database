@@ -11,7 +11,7 @@ trait QueryMethods
     protected array  $values     = [];
     protected ?string $orderBy   = null;
     protected ?string $limit     = null;
-    protected ?string $in        = null;
+    protected ?array $in         = null;
 
     public function table(string $table): self
     {
@@ -106,16 +106,20 @@ trait QueryMethods
             $condition = $this->condition . ' OR (';
         }
         foreach ($where as $value) {
-            $marker = ':' . $value['column'] . QueryBuilder::SECURE . count($this->values);
+            if (str_contains($value['expr'], '` IN :' . $value['column'])) {
+                $this->in[] = str_replace(':' . $value['column'], $value['value'], $value['expr']);
+            } else {
+                $marker = ':' . $value['column'] . QueryBuilder::SECURE . count($this->values);
+                $condition .= $value['expr'] . QueryBuilder::SECURE . count($this->values) . " AND ";
 
-            $condition .= $value['expr'] . QueryBuilder::SECURE . count($this->values) . " AND ";
-
-            $this->values[
-                $marker
+                $this->values[
+                    $marker
                 ] = $value['value'];
+
+                $condition = rtrim($condition, ' AND ') . ')';
+                $this->condition = $condition;
+            }
         }
-        $condition = rtrim($condition, ' AND ') . ')';
-        $this->condition = $condition;
         return $this;
     }
 
@@ -142,19 +146,6 @@ trait QueryMethods
     public function limit(int $limit, int $offset = 0): self
     {
         $this->limit = " LIMIT $limit OFFSET $offset";
-        return $this;
-    }
-
-    /**
-     * in
-     *
-     * @param array $in
-     * @return self
-     */
-    public function in(array $in): self
-    {
-        $in = implode(',', $in);
-        $this->in = " IN($in)";
         return $this;
     }
 }
