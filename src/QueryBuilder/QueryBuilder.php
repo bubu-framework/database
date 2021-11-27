@@ -38,6 +38,7 @@ class QueryBuilder implements QueryMethodsInterface
        $request = str_replace('[TABLE_NAME]', $this->table, $this->action);
 
        if (!is_null($this->condition)) $request .= $this->condition;
+       if (!is_null($this->in)) $request .= $this->in;
        if (!is_null($this->orderBy)) $request .= $this->orderBy;
        if (!is_null($this->limit)) $request .= $this->limit;
 
