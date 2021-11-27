@@ -68,21 +68,18 @@ trait QueryMethods
     }
 
     /**
+     * $values = [
+     * 'col' => 'val'
+     * ]
      * @return self
      */
     public function update(array $values): self
     {
         $request = '';
-        foreach ($values as $key => $value) {
-            $marker = $key;
-            $i = 1;
-            $marker = ltrim($marker, ':');
-            while (array_key_exists($marker . QueryBuilder::SECURE . $i, $this->values)) {
-                $i++;
-            }
-            if ($marker !== '?') $marker = $marker . QueryBuilder::SECURE . $i;
+        foreach ($values as $col => $value) {
+            $marker = $col . QueryBuilder::SECURE . count($this->values);
 
-            $request .= "`{$key}` = :{$marker}, ";
+            $request .= "`{$col}` = :{$marker}, ";
 
             $this->values[
                 $marker
@@ -96,7 +93,7 @@ trait QueryMethods
     /**
      * @param array $where
      * ->where(
-     *      Database::expr()::<op>('<column>', '<marker>', <value>)
+     *      Database::expr()::<op>('<column>', '<value>')
      * )
      * @return self
      */
@@ -108,19 +105,13 @@ trait QueryMethods
             $condition = $this->condition . ' OR (';
         }
         foreach ($where as $value) {
-            $marker = $value['marker'];
+            $marker = ':' . $value['column'] . QueryBuilder::SECURE . count($this->values);
 
-            $i = 1;
-            $marker = ltrim($marker, ':');
-            while (array_key_exists($marker . QueryBuilder::SECURE . $i, $this->values)) {
-                $i++;
-            }
-            if ($marker !== '?') $marker = $marker . QueryBuilder::SECURE . $i;
-            
+            $condition .= $value['expr'] . QueryBuilder::SECURE . count($this->values) . " AND ";
+
             $this->values[
                 $marker
                 ] = $value['value'];
-            $condition .= $value['expr'] . QueryBuilder::SECURE . $i . " AND ";
         }
         $condition = rtrim($condition, ' AND ') . ')';
         $this->condition = $condition;

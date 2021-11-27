@@ -62,7 +62,7 @@ var_dump(Database::queryBuilder('test')
     ->orderBy('col1', QueryBuilder::DESC)
     ->limit(2)
     ->where(
-        Database::expr()->eq('col1', ':col', 50)
+        Database::expr()->neq('col1', 50)
     )
     ->fetchAll($i));
 /*
@@ -78,6 +78,6 @@ var_dump(Database::queryBuilder('test')
 Database::queryBuilder('test')
     ->delete()
     ->where(
-        Database::expr()::lte('col1', ':col', 50)
+        Database::expr()::lte('col1', 50)
     )
     ->execute($i);

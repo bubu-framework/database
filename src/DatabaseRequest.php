@@ -30,14 +30,7 @@ class DatabaseRequest
             if (is_null($dbInstance)) $request = Database::createConnection($opt)->getPdo()->prepare($strRequest);
             else $request = $dbInstance->getPdo()->prepare($strRequest);
 
-            $i = 1;
             foreach ($values as $key => $value) {
-                if (strpos($key, '?') !== false) {
-                    $key = $i;
-                } else {
-                    $key = ':' . ltrim($key, ':');
-                    $i++;
-                }
                 switch (gettype($value)) {
                     case 'integer':
                         $request->bindValue($key, $value, PDO::PARAM_INT);
