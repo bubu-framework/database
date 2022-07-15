@@ -48,7 +48,8 @@ class CreateColumn
     private bool   $zerofill      = false;
     private bool   $notNull       = false;
     private bool   $autoIncrement = false;
-    private mixed  $defaultValue = null;
+    private mixed  $defaultValue  = null;
+    private ?string $onUpdate     = null;
     private ?string $comments     = null;
     private ?string $collate      = null;
     private static array $required = ['name', 'type'];
@@ -146,6 +147,12 @@ class CreateColumn
         return $this;
     }
 
+    public function onUpdate(string $onUpdate): self
+    {
+        $this->onUpdate = $onUpdate;
+        return $this;
+    }
+
     /**
      * put comments on the column
      *
@@ -211,6 +218,7 @@ class CreateColumn
                             )
                         )
                     )
+                    . (!is_null($this->onUpdate) ? " ON UPDATE {$this->onUpdate}" : '')
                     . (!is_null($this->comments) ? " COMMENT '{$this->comments}'" : '')
                     . (!is_null($this->collate) ? " COLLATE '{$this->collate}'" : '')
             );
