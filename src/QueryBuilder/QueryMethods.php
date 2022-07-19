@@ -116,10 +116,10 @@ trait QueryMethods
                     $marker
                 ] = $value['value'];
 
-                $condition = rtrim($condition, ' AND ') . ')';
-                $this->condition = $condition;
             }
         }
+        $condition = rtrim($condition, ' AND ') . ')';
+        $this->condition = $condition;
         return $this;
     }
 
