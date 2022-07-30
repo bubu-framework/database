@@ -27,6 +27,10 @@ class DatabaseRequest
                 $strRequest = explode(';', $strRequest)[1];
             }
 
+            $strRequest = preg_replace_callback('((`[^`]+)(\.)(.+?`))', function ($matches) {
+                return $matches[1] . '`.`' . $matches[3];
+            }, $strRequest);
+
             if (is_null($dbInstance)) $request = Database::createConnection($opt)->getPdo()->prepare($strRequest);
             else $request = $dbInstance->getPdo()->prepare($strRequest);
 
