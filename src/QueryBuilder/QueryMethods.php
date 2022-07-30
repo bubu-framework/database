@@ -110,7 +110,10 @@ trait QueryMethods
             if (str_contains($value['expr'], '` IN :' . $value['column'])) {
                 $this->in[] = str_replace(':' . $value['column'], $value['value'], $value['expr']);
             } else {
-                $marker = ':' . $value['column'] . QueryBuilder::SECURE . count($this->values);
+                $marker = ':' . str_replace('.', '_', $value['column']) . QueryBuilder::SECURE . count($this->values);
+                $tmpExpr = explode(' ', $value['expr']);
+                $tmpExpr[count($tmpExpr)-1] = str_replace('.', '_', $tmpExpr[count($tmpExpr)-1]);
+                $value['expr'] = implode(' ', $tmpExpr);
                 $condition .= $value['expr'] . QueryBuilder::SECURE . count($this->values) . " AND ";
 
                 $this->values[
