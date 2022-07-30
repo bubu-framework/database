@@ -18,4 +18,6 @@ interface QueryMethodsInterface
     public function orderBy(string $column, string $order = QueryBuilder::ASC): self;
 
     public function limit(int $limit, int $offset = 0): self;
+
+    public function join(string $table, string $mode, string $col1, string $col2): self;
 }

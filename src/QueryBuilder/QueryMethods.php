@@ -12,6 +12,7 @@ trait QueryMethods
     protected ?string $orderBy   = null;
     protected ?string $limit     = null;
     protected ?array $in         = null;
+    protected ?string $join      = null;
 
     public function table(string $table): self
     {
@@ -146,6 +147,26 @@ trait QueryMethods
     public function limit(int $limit, int $offset = 0): self
     {
         $this->limit = " LIMIT $limit OFFSET $offset";
+        return $this;
+    }
+
+    /**
+     * join
+     *
+     * @param string $table
+     * @param string $method
+     * @param string $col1
+     * @param string $col2
+     * 
+     * @return self
+     */
+    public function join(
+        string $table,
+        string $method = QueryBuilder::INNER,
+        string $col1,
+        string $col2
+    ): self {
+        $this->join .= " $method JOIN `$table` ON `$col1` = `$col2`";
         return $this;
     }
 }
