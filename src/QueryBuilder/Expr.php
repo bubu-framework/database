@@ -135,7 +135,7 @@ class Expr
         return [
             'value'  => '(' . implode(',', $value) . ')',
             'column' => $column,
-            'expr'   => "`{$column}` IN :{$column}"
+            'expr'   => "`{$column}` IN (:{$column}"
         ];
     }
 }

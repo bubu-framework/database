@@ -1,4 +1,5 @@
 <?php
+
 namespace Bubu\Database\QueryBuilder;
 
 trait QueryMethods
@@ -11,7 +12,6 @@ trait QueryMethods
     protected array  $values     = [];
     protected ?string $orderBy   = null;
     protected ?string $limit     = null;
-    protected ?array $in         = null;
     protected ?string $join      = null;
 
     public function table(string $table): self
@@ -31,9 +31,7 @@ trait QueryMethods
         foreach ($values as $key => $value) {
             $columns .= "`{$key}`, ";
             $markers .= ":{$key}, ";
-            $this->values[
-                $key
-            ] = $value;
+            $this->values[$key] = $value;
         }
         $columns = trim($columns, ', ');
         $markers = trim($markers, ', ');
@@ -83,9 +81,7 @@ trait QueryMethods
 
             $request .= "`{$col}` = :{$marker}, ";
 
-            $this->values[
-                $marker
-            ] = $value;
+            $this->values[$marker] = $value;
         }
         $request = trim($request, ', ');
         $this->action = 'UPDATE `[TABLE_NAME]` SET ' . $request;
@@ -107,20 +103,18 @@ trait QueryMethods
             $condition = $this->condition . ' OR (';
         }
         foreach ($where as $value) {
-            if (str_contains($value['expr'], '` IN :' . $value['column'])) {
-                $this->in[] = str_replace(':' . $value['column'], $value['value'], $value['expr']);
-            } else {
-                $marker = ':' . str_replace('.', '_', $value['column']) . QueryBuilder::SECURE . count($this->values);
-                $tmpExpr = explode(' ', $value['expr']);
-                $tmpExpr[count($tmpExpr)-1] = str_replace('.', '_', $tmpExpr[count($tmpExpr)-1]);
-                $value['expr'] = implode(' ', $tmpExpr);
-                $condition .= $value['expr'] . QueryBuilder::SECURE . count($this->values) . " AND ";
 
-                $this->values[
-                    $marker
-                ] = $value['value'];
+            $marker = ':' . str_replace('.', '_', $value['column']) . QueryBuilder::SECURE . count($this->values);
+            $tmpExpr = explode(' ', $value['expr']);
+            $tmpExpr[count($tmpExpr) - 1] = str_replace('.', '_', $tmpExpr[count($tmpExpr) - 1]);
+            $value['expr'] = implode(' ', $tmpExpr);
+            $condition .= $value['expr']
+                . QueryBuilder::SECURE
+                . count($this->values)
+                . (str_contains($value['expr'], '` IN (:' . $value['column']) ? ')' : '')
+                . " AND ";
 
-            }
+            $this->values[$marker] = $value['value'];
         }
         $condition = rtrim($condition, ' AND ') . ')';
         $this->condition = $condition;

@@ -48,7 +48,6 @@ class QueryBuilder implements QueryMethodsInterface
         if (!is_null($this->as)) $request .= " AS {$this->as}";
         if (!is_null($this->join)) $request .= " {$this->join}";
         if (!is_null($this->condition)) $request .= $this->condition;
-        if (!is_null($this->in)) $request .= (is_null($this->condition) ? 'WHERE ' : ' AND ') . implode(' AND ', $this->in);
         if (!is_null($this->orderBy)) $request .= $this->orderBy;
         if (!is_null($this->limit)) $request .= $this->limit;
 
