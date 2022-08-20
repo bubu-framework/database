@@ -50,6 +50,10 @@ trait QueryMethods
         foreach ($columns as $value) {
             if ($value === '*') {
                 $select .= ' *,';
+            } elseif (str_contains($value, '.*')) {
+                $select .= ' `' . explode('.', $value)[0] . '`.*,';
+            } elseif (str_contains($value, '.')) {
+                $select .=  ' `' . explode('.', $value)[0] . '`.`' . explode('.', $value)[1] . '`,';
             } else {
                 $select .= " `{$value}`,";
             }
@@ -163,7 +167,7 @@ trait QueryMethods
         string $col1,
         string $col2
     ): self {
-        $this->join .= " $method JOIN `$table` ON `$col1` = `$col2`";
+        $this->join .= " $method JOIN `$table` ON `" . implode('`.`', explode('.', $col1)) . "` = `" . implode('`.`', explode('.', $col2)) . "`";
         return $this;
     }
 }
