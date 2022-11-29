@@ -31,7 +31,10 @@ class DatabaseRequest
                 return $matches[1] . '`.`' . $matches[3];
             }, $strRequest);
 
-            if (is_null($dbInstance)) $request = Database::createConnection($opt)->getPdo()->prepare($strRequest);
+            if (is_null($dbInstance)) {
+                $dbInstance = Database::createConnection($opt)->getPdo();
+                $request = $dbInstance->prepare($strRequest);
+            }
             else $request = $dbInstance->getPdo()->prepare($strRequest);
 
             foreach ($values as $key => $value) {
@@ -68,7 +71,7 @@ class DatabaseRequest
                 return $return;
             } else {
                 $request->closeCursor();
-                return true;
+                return $dbInstance;
             }
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
