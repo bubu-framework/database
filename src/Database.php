@@ -35,7 +35,6 @@ class Database
         $host = $dbConnectionOpt['host'] ?? $_ENV['DB_HOST'];
         $name = $dbConnectionOpt['name'] ?? $_ENV['DB_NAME'];
         $port = $dbConnectionOpt['port'] ?? $_ENV['DB_PORT'];
-        $charset = $dbConnectionOpt['charset'] ?? $_ENV['DB_CHARSET'];
         $username = $dbConnectionOpt['username'] ?? $_ENV['DB_USERNAME'];
         $password = $dbConnectionOpt['password'] ?? $_ENV['DB_PASSWORD'];
         $errorMode = $dbConnectionOpt['errorMode'] ?? $_ENV['DB_ERRORMODE'];
@@ -43,7 +42,7 @@ class Database
         $fetchMode = $dbConnectionOpt['fetchMode'] ?? constant("self::{$_ENV['DB_FETCH_MODE']}");
 
         $pdo = new PDO(
-            $type . ':host=' . $host . ';dbname=' . $name . ';port=' . $port . ';charset=' . $charset,
+            $type . ':host=' . $host . ';dbname=' . $name . ';port=' . $port,
             $username,
             $password
         );
